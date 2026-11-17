@@ -1,0 +1,6 @@
+{
+  "name": "EDU CORE — Darul Huda Bengal Campus",
+  "description": "Premium School Exam & Result Management Portal for Darul Huda Bengal Campus with role-based access control for Admin, Teacher, and Student portals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

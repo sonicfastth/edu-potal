@@ -1,0 +1,784 @@
+{
+  "entities": {
+    "AdminMarker": {
+      "title": "AdminMarker",
+      "description": "Trusted marker document identifying an administrator account by UID.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "username", "createdAt"]
+    },
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Core user authentication and role mapping without raw PII.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_.\\-]+$"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "teacher", "student"]
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "mustChangePassword": {
+          "type": "boolean"
+        },
+        "linkedEntityId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "passwordHash": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "username", "role", "fullName", "mustChangePassword", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated PII subcollection document for phone number, address, and personal details.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "guardianName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "bloodGroup": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "bio": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "phone", "address", "updatedAt"]
+    },
+    "StudentRecord": {
+      "title": "StudentRecord",
+      "description": "Academic student profile containing admission number, roll number, class, and section assignments.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "admissionNo": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 64
+        },
+        "classId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "className": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "sectionId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sectionName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "graduated", "suspended"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "userId", "admissionNo", "rollNo", "fullName", "username", "classId", "className", "sectionId", "sectionName", "status", "createdAt", "updatedAt"]
+    },
+    "TeacherRecord": {
+      "title": "TeacherRecord",
+      "description": "Faculty profile and academic assignment boundaries.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "employeeId": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 64
+        },
+        "designation": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "assignedClassIds": {
+          "type": "array"
+        },
+        "assignedSectionIds": {
+          "type": "array"
+        },
+        "assignedSubjectIds": {
+          "type": "array"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "on_leave", "inactive"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "userId", "employeeId", "fullName", "username", "designation", "assignedClassIds", "assignedSectionIds", "assignedSubjectIds", "status", "createdAt", "updatedAt"]
+    },
+    "SchoolClass": {
+      "title": "SchoolClass",
+      "description": "Academic class level definition.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "code": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "academicYear": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "code", "academicYear", "capacity", "createdAt", "updatedAt"]
+    },
+    "ClassSection": {
+      "title": "ClassSection",
+      "description": "Section division linked to an academic class.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "classId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "className": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "roomNo": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "classId", "className", "roomNo", "capacity", "createdAt", "updatedAt"]
+    },
+    "AcademicSubject": {
+      "title": "AcademicSubject",
+      "description": "Subject curriculum entity assigned to a class and teacher.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "code": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "classId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "className": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "teacherId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "teacherName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "maxMarks": {
+          "type": "number"
+        },
+        "passMarks": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "code", "classId", "className", "teacherId", "teacherName", "maxMarks", "passMarks", "createdAt", "updatedAt"]
+    },
+    "Examination": {
+      "title": "Examination",
+      "description": "Scheduled examination event with max marks, pass threshold, and status.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "academicYear": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "term": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "classId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "className": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "sectionId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sectionName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "maxMarks": {
+          "type": "number"
+        },
+        "passMarks": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["scheduled", "ongoing", "published", "locked"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "academicYear", "term", "classId", "className", "sectionId", "sectionName", "maxMarks", "passMarks", "status", "createdAt", "updatedAt"]
+    },
+    "MarkRecord": {
+      "title": "MarkRecord",
+      "description": "Student subject mark entry with computed percentage, grade, and pass/fail outcome.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "examId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "examName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "studentId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "studentUserId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "studentName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "admissionNo": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "rollNo": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "classId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "className": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "sectionId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "sectionName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "subjectId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "subjectName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "maxMarks": {
+          "type": "number"
+        },
+        "passMarks": {
+          "type": "number"
+        },
+        "obtainedMarks": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "grade": {
+          "type": "string",
+          "maxLength": 8
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "teacherId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "teacherUserId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "remarks": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "examId",
+        "examName",
+        "studentId",
+        "studentUserId",
+        "studentName",
+        "admissionNo",
+        "rollNo",
+        "classId",
+        "className",
+        "sectionId",
+        "sectionName",
+        "subjectId",
+        "subjectName",
+        "maxMarks",
+        "passMarks",
+        "obtainedMarks",
+        "percentage",
+        "grade",
+        "passed",
+        "teacherId",
+        "teacherUserId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "SchoolSettings": {
+      "title": "SchoolSettings",
+      "description": "Global school profile and campus branding configuration.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "campusSubtitle": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "logoUrl": {
+          "type": "string",
+          "maxLength": 250000
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "academicYear": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "principalName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "motto": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name", "campusSubtitle", "address", "phone", "academicYear", "updatedAt"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Application theme, accent color, and grading scale configuration.",
+      "type": "object",
+      "properties": {
+        "appName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "logoText": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "themeMode": {
+          "type": "string",
+          "enum": ["dark", "cream"]
+        },
+        "accentColor": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "passPercentage": {
+          "type": "number"
+        },
+        "gradingScaleJson": {
+          "type": "list"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["appName", "logoText", "themeMode", "accentColor", "passPercentage", "updatedAt"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Audit log entry for administrative and academic events.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "actorUid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "actorName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "actorRole": {
+          "type": "string",
+          "enum": ["admin", "teacher", "student"]
+        },
+        "action": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "actorUid", "actorName", "actorRole", "action", "category", "createdAt"]
+    },
+    "CampusIndex": {
+      "title": "CampusIndex",
+      "description": "Administrator manifest of document IDs across campus collections for fast deterministic hydration.",
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "type": "array"
+        },
+        "studentIds": {
+          "type": "array"
+        },
+        "teacherIds": {
+          "type": "array"
+        },
+        "classIds": {
+          "type": "array"
+        },
+        "sectionIds": {
+          "type": "array"
+        },
+        "subjectIds": {
+          "type": "array"
+        },
+        "examIds": {
+          "type": "array"
+        },
+        "markIds": {
+          "type": "array"
+        },
+        "activityLogIds": {
+          "type": "array"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userIds", "studentIds", "teacherIds", "markIds", "activityLogIds", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/AdminMarker" },
+      "description": "Trusted administrator UID registry."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "Core user authentication and role metadata."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Isolated PII subcollection for phone, address, and personal bio."
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/StudentRecord" },
+      "description": "Student academic directory."
+    },
+    "/teachers/{teacherId}": {
+      "schema": { "$ref": "#/entities/TeacherRecord" },
+      "description": "Teacher academic directory and assignments."
+    },
+    "/classes/{classId}": {
+      "schema": { "$ref": "#/entities/SchoolClass" },
+      "description": "School class registry."
+    },
+    "/sections/{sectionId}": {
+      "schema": { "$ref": "#/entities/ClassSection" },
+      "description": "Class section registry."
+    },
+    "/subjects/{subjectId}": {
+      "schema": { "$ref": "#/entities/AcademicSubject" },
+      "description": "Curriculum subjects registry."
+    },
+    "/examinations/{examId}": {
+      "schema": { "$ref": "#/entities/Examination" },
+      "description": "School examinations schedule and grading parameters."
+    },
+    "/marks/{markId}": {
+      "schema": { "$ref": "#/entities/MarkRecord" },
+      "description": "Student examination marks and calculated grades."
+    },
+    "/schoolSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/SchoolSettings" },
+      "description": "School branding and contact metadata."
+    },
+    "/appSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/AppSettings" },
+      "description": "Application theme and grading configuration."
+    },
+    "/activityLogs/{logId}": {
+      "schema": { "$ref": "#/entities/ActivityLog" },
+      "description": "Administrative and academic audit log."
+    },
+    "/campusIndex/{docId}": {
+      "schema": { "$ref": "#/entities/CampusIndex" },
+      "description": "Administrator document ID manifest for deterministic Firestore hydration."
+    }
+  }
+}
